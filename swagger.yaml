@@ -1,0 +1,41 @@
+basePath: /api/
+consumes:
+- application/json
+info:
+  description: Documentation for online payment system
+  title: Online payment system
+  version: 1.0.0
+paths:
+  /status:
+    get:
+      description: Test method for check that API run
+      operationId: Status
+      parameters:
+        - name: "authorization"
+          in: "header"
+          description: "Authorization token"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          $ref: '#/responses/statusResponse'
+      tags:
+      - status
+
+produces:
+- application/json
+responses:
+
+  statusResponse:
+    description: Return status
+    schema:
+      type: object
+      properties:
+        status:
+          description: Return "ok" if api work
+          type: string
+
+schemes:
+- http
+- https
+swagger: "2.0"

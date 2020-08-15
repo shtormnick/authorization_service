@@ -1,0 +1,39 @@
+version: '3.2'
+
+services:
+  backend:
+    build: .
+    environment:
+      - BIND_ADDR=0.0.0.0:8000
+      - DB_URL=postgres://admin:admin@postgres/auth?sslmode=disable
+      - DB_TEST_URL=postgres://admin:admin@postgres/auth_test?sslmode=disable
+      - REDIS_ADDRESS=redis:6379
+      - TEMPLATE_PATH=/app/templates
+    env_file:
+      - .env
+    volumes:
+      - .:/app:delegated
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - 8000:8000
+    command: bash -c "./wait-db && make dev"
+
+  postgres:
+    image: postgres
+    command: -c fsync=off -c full_page_writes=off
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+        - POSTGRES_USER=admin
+        - POSTGRES_PASSWORD=admin
+        - POSTGRES_DB=auth
+    ports:
+        - 5432:5432
+
+  redis:
+    image: "redis:alpine"
+
+volumes:
+  pgdata:

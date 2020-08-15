@@ -1,0 +1,9 @@
+version: '3.2'
+
+services:
+
+  backend:
+    ports:
+      - 8000:8000
+      - 2345:2345
+    command: make debug
